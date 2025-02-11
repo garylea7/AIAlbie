@@ -1,0 +1,156 @@
+.aialbie-prompter-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.prompter-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.prompter-logo {
+    max-width: 150px;
+    margin-bottom: 1rem;
+}
+
+.prompter-header h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.prompter-header p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.prompt-input-section {
+    margin-bottom: 2rem;
+}
+
+.prompt-category-select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.prompt-input {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.optimize-button {
+    width: 100%;
+    padding: 1rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.optimize-button:hover {
+    background: #2980b9;
+}
+
+.prompt-output-section {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.optimized-result {
+    padding: 1rem;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    margin: 1rem 0;
+    min-height: 100px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.action-button {
+    padding: 0.5rem 1rem;
+    background: #ffffff;
+    border: 2px solid #3498db;
+    color: #3498db;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-button:hover {
+    background: #3498db;
+    color: white;
+}
+
+.prompter-tips {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f0f7ff;
+    border-radius: 8px;
+}
+
+.prompter-tips h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.prompter-tips ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.prompter-tips li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.prompter-tips li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #3498db;
+}
+
+.hidden {
+    display: none;
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

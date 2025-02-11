@@ -1,0 +1,102 @@
+.preview-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.original-content,
+.wordpress-preview {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.preview-block {
+    position: relative;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.preview-block:hover {
+    border-color: #0073aa;
+}
+
+.block-type {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: #0073aa;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.block-controls {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: none;
+}
+
+.preview-block:hover .block-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.block-controls button {
+    padding: 2px 6px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.block-controls button:hover {
+    background: #0073aa;
+    color: white;
+}
+
+.preview-controls {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-options {
+    display: flex;
+    gap: 20px;
+}
+
+.highlight-differences .preview-block {
+    background: #f7f7f7;
+}
+
+.highlight-differences .preview-block.changed {
+    background: #fff9e6;
+}
+
+.wp-block-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.sync-scroll .original-content,
+.sync-scroll .wordpress-preview {
+    scroll-behavior: smooth;
+}

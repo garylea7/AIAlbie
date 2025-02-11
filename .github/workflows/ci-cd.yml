@@ -1,0 +1,126 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [7.4, 8.0, 8.1]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mbstring, intl, json, mysql, zip
+        coverage: xdebug
+
+    - name: Validate composer.json
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Run tests
+      run: composer test
+
+    - name: Run PHPStan
+      run: composer phpstan
+
+    - name: Run PHPCS
+      run: composer phpcs
+
+  security:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Security check
+      uses: symfonycorp/security-checker-action@v2
+
+    - name: OWASP Dependency Check
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'AIAlbie'
+        path: '.'
+        format: 'HTML'
+
+  build:
+    needs: [test, security]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build assets
+      run: |
+        npm install
+        npm run build
+
+    - name: Optimize images
+      run: |
+        find public/images -type f -name "*.jpg" -exec jpegoptim --strip-all --max=85 {} \;
+        find public/images -type f -name "*.png" -exec optipng -o5 {} \;
+
+    - name: Create deployment package
+      run: |
+        zip -r deploy.zip . -x "*.git*" "node_modules/*" "tests/*"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: deploy-package
+        path: deploy.zip
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: deploy-package
+
+    - name: Deploy to staging
+      uses: easingthemes/ssh-deploy@v2
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.STAGING_SSH_KEY }}
+        REMOTE_HOST: ${{ secrets.STAGING_HOST }}
+        REMOTE_USER: ${{ secrets.STAGING_USER }}
+        SOURCE: "deploy.zip"
+        TARGET: "/var/www/staging"
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: deploy-package
+
+    - name: Deploy to production
+      uses: easingthemes/ssh-deploy@v2
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+        REMOTE_HOST: ${{ secrets.PRODUCTION_HOST }}
+        REMOTE_USER: ${{ secrets.PRODUCTION_USER }}
+        SOURCE: "deploy.zip"
+        TARGET: "/var/www/production"
